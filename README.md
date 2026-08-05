@@ -52,7 +52,7 @@ Bundling on its own, without the skill:
 
 | Path | What |
 |---|---|
-| [`SKILL.md`](SKILL.md) | The eight-step procedure |
+| [`SKILL.md`](SKILL.md) | The six-step procedure |
 | [`references/instruction-template.md`](references/instruction-template.md) | The instruction skeleton, with filling notes and a worked routing table |
 | [`references/host-notes.md`](references/host-notes.md) | Gemini / Grok / ChatGPT mechanics, private repos, and when the port is the wrong tool |
 | [`references/repo-profiles.md`](references/repo-profiles.md) | Three repo archetypes and what changes per archetype |

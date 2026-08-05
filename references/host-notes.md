@@ -2,7 +2,7 @@
 
 What each host actually gives you, where the ports break, and the setup steps to hand the user.
 
-**Verify limits in the product UI at build time.** Instruction-field caps, knowledge-file counts, and per-file size limits change without notice on all of these. Nothing below states a number, on purpose — the tiering in Step 7 exists so a moved limit costs a paste, not a rebuild.
+**Verify limits in the product UI at build time.** Instruction-field caps, knowledge-file counts, and per-file size limits change without notice on all of these. Nothing below states a number, on purpose — the tiering in Step 5 exists so a moved limit costs a paste, not a rebuild.
 
 ## The three capabilities
 
@@ -26,7 +26,7 @@ The editor exposes **Name**, **Description**, **Instructions**, **Default tool**
 - Browsing is inconsistent turn to turn. A Gem that depends on fetching a `SKILL.md` will work in testing and fail for the user a week later. **Default Gems to hybrid or knowledge-file strategy**, not link-only.
 - Knowledge retrieval is content-based. Bundles need the `===== FILE: <path> =====` headers *and* the unit's own headings intact — strip the headings and the right file stops surfacing.
 - File and size caps: read them off the UI at build time. Bundle when a cap binds; do not pre-bundle a repo that already fits.
-- Setup to hand the user: create a Gem → paste FULL into Instructions → add Knowledge (Import code, or upload the bundles) → set a Default tool if a browsing one exists → run the three probes from Step 8 before trusting it.
+- Setup to hand the user: create a Gem → paste FULL into Instructions → add Knowledge (Import code, or upload the bundles) → set a Default tool if a browsing one exists → run the three probes from Step 6 before trusting it.
 
 ## Grok Project
 
