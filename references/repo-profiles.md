@@ -1,0 +1,36 @@
+# Repo archetypes
+
+The archetype decides what the routing table routes *on*. Pick by how the user will prompt the finished Gem, not by what the repo contains most of.
+
+## A. Skill collection
+
+A folder of self-contained units (`SKILL.md`, prompt files, playbooks), each with its own trigger.
+
+- **Routes on:** user intent → one unit.
+- **Inline:** the unit index and its triggers. Nothing else — the units themselves are what retrieval is for.
+- **Invariants:** usually cross-cutting rules from `CLAUDE.md`/`AGENTS.md` (output format, what never to do), not from any single unit.
+- **Sizing:** the routing table is the bulk of the instruction text. Past ~25 units it will not fit FULL — group into families (one row per family, "then retrieve the family's index") rather than dropping rows.
+- **Trap:** a unit whose own description is written for a model-invoked host ("Use when the user asks…") is already a trigger. Reuse it; do not rewrite it into a label.
+
+## B. Working-conventions codebase
+
+A real project whose repo encodes how work on it is done: `CLAUDE.md`, `CONTRIBUTING.md`, ADRs, house style, test policy.
+
+- **Routes on:** task type → the doc governing it (writing a migration, adding a component, opening a PR).
+- **Inline:** the conventions that apply to *every* task — naming, structure, forbidden patterns. These are the invariants and they are the point of the port.
+- **Retrieve:** ADRs, per-area guides, templates.
+- **Trap:** the code itself is not routable. A Gem cannot read the tree, so any instruction of the form "match the surrounding code" is unfulfillable. Convert those into stated rules or drop them.
+- **Also state:** the host cannot run the test suite or the linter. Route those to a command the user runs.
+
+## C. Knowledge corpus
+
+Documents, notes, research — value is in the content, not in procedures over it.
+
+- **Routes on:** topic → document. Weakest routing of the three, and often the sign that the whole port is the wrong tool (see `host-notes.md` → "When the answer is not this").
+- **Inline:** a topic map — what exists and where — and the corpus's own vocabulary, so the host uses the right terms when searching knowledge files.
+- **Prefer:** knowledge-file strategy. Topic routing over raw URLs performs badly; semantic search over bundles performs well.
+- **Invariants:** citation discipline. Every claim traced to a document, and an explicit "say you don't know rather than filling gaps" rule — corpora invite confabulation more than the other two archetypes.
+
+## Mixed repos
+
+Common: a skills repo that also has conventions about how skills are written (A + B). Compile the archetype the user prompts against, and demote the other to invariants. A repo that is genuinely both, used both ways, is two Gems — say so rather than building one that does neither well.
