@@ -1,13 +1,15 @@
 ---
 name: repo-to-project-instructions
-description: "Compiles a git repository into ready-to-paste custom instructions for hosts that cannot clone or execute a repo — Gemini Gem instructions, Grok Project instructions, ChatGPT Project instructions, or any bare system prompt — so the host works the way the repo says to work, treating the repo as a retrievable knowledge base rather than a runtime. Use when the user gives a repo URL and asks for Gem/Project/custom instructions, wants a skills repo usable on Gemini or Grok, asks to port skills to another AI host, or says 把仓库/git链接变成 Gem 指令 / 项目指令 / 提示词. Not for editing the repo itself."
+description: "Compiles a git repository into ready-to-paste custom instructions for hosts that cannot clone or execute a repo — Gemini Gem instructions, Grok Project instructions, ChatGPT Project instructions, or any bare system prompt. The compiled text is a routing layer used alongside the repo link, not a replacement for it: the repo stays the source of truth and the instructions say what to retrieve from it and when. Use when the user gives a repo URL and asks for Gem, Project, or custom instructions; wants a skills repo usable on Gemini or Grok; asks to port skills, prompts, or working conventions to another AI host; or asks how to make a Gem follow a repository. Not for editing the repo itself."
 ---
 
 # Repo → Project Instructions
 
 Gemini Gems, Grok Projects, and ChatGPT Projects cannot clone a repo, list a tree, or run its scripts. They have three things: a persistent instruction field, optional uploaded knowledge files, and (sometimes) web fetch at answer time. This skill compiles a repo into exactly those three things.
 
-The deliverable is **an instruction text that works with zero successful fetches** and gets *better* when fetches succeed — never one that collapses when browsing is off.
+**The compiled text works with the repo, not instead of it.** The repo remains the source of truth and holds the full text of everything; the instructions carry the index, the invariants, and the rules for reaching back into the repo — the layer a host cannot derive on its own. Compress toward pointers, not toward a self-contained copy.
+
+Within that, the deliverable must **work with zero successful fetches** and get *better* when fetches succeed — never one that collapses when browsing is off.
 
 ## Inputs
 

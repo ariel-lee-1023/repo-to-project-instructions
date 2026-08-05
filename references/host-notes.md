@@ -12,7 +12,7 @@ Every host in scope offers some subset of:
 2. **Knowledge files** — uploads the host searches when answering. Count and size capped; retrieval is semantic, so headings matter more than filenames.
 3. **Fetch at answer time** — web access. The least reliable of the three: available, then unavailable, then available again, sometimes silently.
 
-The compiled instructions must work on (1) alone. (2) and (3) are upgrades.
+The compiled instructions are pasted into (1) and are designed around (2) and (3) being where the repo's actual content comes from. They must still degrade usefully when only (1) is working — a thinner answer that names what it could not reach, never a confident one built from nothing.
 
 ## Gemini Gem
 

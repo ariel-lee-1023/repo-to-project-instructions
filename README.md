@@ -4,11 +4,21 @@ Compiles a git repository into custom instructions for AI hosts that **cannot cl
 
 Give it a repo URL; it gives you a paste-ready instruction text plus, when needed, the knowledge files to upload alongside it. The host then works the way the repo says to work, treating the repo as a knowledge base it retrieves from rather than a runtime it executes.
 
+**The output is used together with the repo link, not in place of it.** The repo stays the source of truth and holds the full text of everything; the compiled instructions carry the index, the invariants, and the rules for reaching back into it.
+
 ## Why
 
-A skills repo is useless to a Gem as a link. These hosts don't browse a tree, don't read `CLAUDE.md` on their own, and don't reliably fetch anything unless told exactly what to fetch and when. What's missing is a **routing layer**: an explicit `if the request looks like X → retrieve Y → do Z` table, plus the repo's non-negotiable rules inlined so the thing still works on a turn where browsing is off.
+A repo link alone gets a Gem almost nowhere. These hosts don't browse a tree, don't read `CLAUDE.md` on their own, and don't reliably fetch anything unless told exactly what to fetch and when — so the link is necessary but not sufficient. What's missing is a **routing layer**: an explicit `if the request looks like X → retrieve Y → do Z` table, plus the repo's non-negotiable rules inlined so the thing still works on a turn where browsing is off.
 
 That routing layer is what this skill writes.
+
+## How the pieces fit
+
+| Piece | Holds | Lives |
+|---|---|---|
+| Compiled instructions | Routing table, invariants, retrieval and degradation rules | Pasted into the Gem/Project instruction field |
+| The repo | Full text of every skill, doc, and convention | Retrieved on demand at a pinned commit |
+| Knowledge bundles (optional) | The same repo text, pre-uploaded | For private repos or hosts whose browsing is unreliable |
 
 ## What you get
 
@@ -23,7 +33,7 @@ That routing layer is what this skill writes.
 In any agent with this skill installed:
 
 ```
-把 https://github.com/owner/repo 编译成 Gemini Gem 的项目指令
+Compile https://github.com/owner/repo into Gemini Gem instructions
 ```
 
 Bundling on its own, without the skill:
