@@ -7,6 +7,8 @@ description: "Compiles a git repository into ready-to-paste custom instructions 
 
 Gemini Gems, Grok Projects, and ChatGPT Projects cannot clone a repo, list a tree, or run its scripts. They have three things: a persistent instruction field, optional uploaded knowledge files, and (sometimes) web fetch at answer time. This skill compiles a repo into exactly those three things.
 
+A link or an upload buys **access** only. **Routing** — knowing which file governs this request and retrieving it before answering — and **compliance** — following a procedure rather than summarising it — come from the instruction field or not at all. Ingesting the whole repo as knowledge does not substitute for either.
+
 **The compiled text works with the repo, not instead of it.** The repo remains the source of truth and holds the full text of everything; the instructions carry the index, the invariants, and the rules for reaching back into the repo — the layer a host cannot derive on its own. Compress toward pointers, not toward a self-contained copy.
 
 Within that, the deliverable must **work with zero successful fetches** and get *better* when fetches succeed — never one that collapses when browsing is off.
@@ -73,7 +75,7 @@ Add a final catch-all row: what to do when nothing matches (usually: answer norm
 ## Step 5 — Choose the retrieval strategy
 
 - **Link-only** — public repo, host can browse. Smallest setup, always current at the pinned SHA, dies when browsing is off.
-- **Knowledge-file** — private repo, no browsing, or a repo small enough to bundle whole. Run [`scripts/bundle-knowledge.sh`](scripts/bundle-knowledge.sh) to concatenate the markdown into a handful of bundles under the host's file cap, and have the instructions cite *bundle + heading* instead of URLs.
+- **Knowledge-file** — private repo, no browsing, or a repo small enough to ingest whole. Check first whether the host imports a repo natively (Gemini's Knowledge → Import code); where it does, that replaces the bundling step and leaves no second copy to go stale. Otherwise run [`scripts/bundle-knowledge.sh`](scripts/bundle-knowledge.sh) to concatenate the markdown into a handful of bundles under the host's file cap. Either way the instructions cite repo paths, which the import or the bundle headers preserve.
 - **Hybrid** (default when in doubt) — bundle the high-traffic units as knowledge files, link the long tail. The instructions then say: check knowledge files first, fetch only what is not there.
 
 [`references/host-notes.md`](references/host-notes.md) has the per-host mechanics and the setup steps to hand the user.

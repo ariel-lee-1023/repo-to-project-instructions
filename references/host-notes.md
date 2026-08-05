@@ -16,10 +16,17 @@ The compiled instructions are pasted into (1) and are designed around (2) and (3
 
 ## Gemini Gem
 
-- Instructions field plus a small set of knowledge files. The file cap is low enough that a repo of any size **must** be bundled — this is the main reason `scripts/bundle-knowledge.sh` exists.
+The editor exposes **Name**, **Description**, **Instructions**, **Default tool**, **Knowledge** (Upload files / Add from Drive / Photos / Import code / Gemini Notebook), and a **Disable Knowledge Citations** toggle.
+
+- Name and Description label the Gem in the picker. Behaviour goes in **Instructions** — that is the field applied on every turn. Do not spend instruction budget restating the description.
+- **Knowledge is retrieval, not obligation.** Uploading every unit makes the text findable; it does not make the Gem *run* the right unit at the right moment. That comes only from ROUTING in the instruction field. A fully ingested repo still needs compiled instructions — this is the single most common wrong assumption about the port.
+- **Import code** ingests a codebase into Knowledge directly. When it accepts the repo, prefer it to `bundle-knowledge.sh`: fewer moving parts and no second copy to go stale. Verify what it actually takes (remote URL or local files, whether it recurses, whether markdown structure survives) before designing around it, and fall back to bundling if it does not.
+- **Default tool** — check what it offers. If a search or browsing tool can be set as the default, that is the cheapest available increase in retrieval reliability, and it is what makes link-only worth considering here at all.
+- **Disable Knowledge Citations** — leave citations *on* while probing. They show which file was actually retrieved, which is the fastest way to tell a bad routing row from a bad answer. Turn them off only after the probes pass.
 - Browsing is inconsistent turn to turn. A Gem that depends on fetching a `SKILL.md` will work in testing and fail for the user a week later. **Default Gems to hybrid or knowledge-file strategy**, not link-only.
 - Knowledge retrieval is content-based. Bundles need the `===== FILE: <path> =====` headers *and* the unit's own headings intact — strip the headings and the right file stops surfacing.
-- Setup to hand the user: create a Gem → paste FULL into instructions → upload the bundles → run the three probes from Step 8 before trusting it.
+- File and size caps: read them off the UI at build time. Bundle when a cap binds; do not pre-bundle a repo that already fits.
+- Setup to hand the user: create a Gem → paste FULL into Instructions → add Knowledge (Import code, or upload the bundles) → set a Default tool if a browsing one exists → run the three probes from Step 8 before trusting it.
 
 ## Grok Project
 

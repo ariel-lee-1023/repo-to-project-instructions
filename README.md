@@ -8,9 +8,15 @@ Give it a repo URL; it gives you a paste-ready instruction text plus, when neede
 
 ## Why
 
-A repo link alone gets a Gem almost nowhere. These hosts don't browse a tree, don't read `CLAUDE.md` on their own, and don't reliably fetch anything unless told exactly what to fetch and when — so the link is necessary but not sufficient. What's missing is a **routing layer**: an explicit `if the request looks like X → retrieve Y → do Z` table, plus the repo's non-negotiable rules inlined so the thing still works on a turn where browsing is off.
+Handing a Gem the repo link leaves three gaps, and the link narrows only the first:
 
-That routing layer is what this skill writes.
+- **Access** — can the host see the content? A fetched repo URL returns the landing page, the README at best. It will not walk a tree or open every `SKILL.md` unless handed each path.
+- **Routing** — does it know which file governs *this* request, and does it look before answering? Nothing in these hosts maps a request to a file and loads it first. That mapping is the layer Claude Code provides and a Gem does not.
+- **Compliance** — does it follow a procedure rather than summarise it? Retrieved text is reference material. Only the instruction field carries force on every turn.
+
+Uploading the whole repo as knowledge closes Access and leaves the other two untouched: *searched when the model judges it relevant* is not *followed at the moment it applies*. This is why a fully ingested repo still needs compiled instructions.
+
+That's what this skill writes — an explicit `if the request looks like X → retrieve Y → do Z` table, plus the repo's non-negotiable rules inlined so the thing still works on a turn where retrieval fails.
 
 ## How the pieces fit
 
