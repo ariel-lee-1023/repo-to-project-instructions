@@ -40,7 +40,7 @@ Then read, in this order, stopping when you can state what the repo is for in on
 3. The unit files — every `SKILL.md` frontmatter for a skills repo; the top-level module layout for a codebase
 4. Anything the above three explicitly point at
 
-Classify against the three archetypes in [`references/repo-profiles.md`](references/repo-profiles.md) — **skill collection**, **working-conventions codebase**, **knowledge corpus** — because the archetype decides what the routing table routes *on*. A repo can be two of them; pick the one that matches how the user will actually prompt the Gem.
+Classify against the four archetypes in [`references/repo-profiles.md`](references/repo-profiles.md) — **skill collection**, **working-conventions codebase**, **knowledge corpus**, **voice/persona** — because the archetype decides what the routing table routes *on*, and for a voice repo it decides that most of the material cannot be left retrievable at all. A repo can be two of them; pick the one that matches how the user will actually prompt the Gem.
 
 **Done when:** you have a pinned SHA, one verified raw URL, a named archetype, and a list of every retrievable unit with its path.
 
@@ -100,6 +100,8 @@ Cut in this order: worked examples → process summaries (the fetch covers them)
 ## Step 6 — Self-test and deliver
 
 Write three probe prompts a user would plausibly send: one that must route to a specific unit, one ambiguous between two units, one that must route nowhere. For each, state the expected behaviour. Walk the FULL text as if you were the host — if a probe lands wrong, the routing table is at fault, not the probe.
+
+Say how to check the result, because the instructions forbid the host from narrating its own process: read the host's citation display, which records what was actually retrieved, or ask the Gem directly after the probe reply. Do not solve this by adding a standing instruction to announce the file it used — that is a self-report, and it can contradict the same reply's own degradation notice.
 
 Deliver as files in the repo's own directory or the user's chosen output path:
 

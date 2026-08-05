@@ -31,6 +31,16 @@ Documents, notes, research — value is in the content, not in procedures over i
 - **Prefer:** knowledge-file strategy. Topic routing over raw URLs performs badly; semantic search over bundles performs well.
 - **Invariants:** citation discipline. Every claim traced to a document, and an explicit "say you don't know rather than filling gaps" rule — corpora invite confabulation more than the other two archetypes.
 
+## D. Voice / persona
+
+A repo that defines *how someone thinks and sounds* — a perspective skill, a distilled persona, a house voice — where the output is the voice and there is no separable procedure to run.
+
+- **Routes on:** subject matter → the material that voice draws on (a cluster file, a body of positions), never a procedure.
+- **Inline:** most of it. A persona cannot be loaded only when relevant — a Gem that is itself for half a reply is not that persona. The voice, its commitments, its characteristic moves, and what it refuses go in the instruction field in full, and this archetype routinely blows the FULL tier. When it does, cut retrievable material, never the voice.
+- **Retrieve:** topical depth — the reference files behind a subject, not the identity.
+- **Trap that only shows up in the field:** any machine chatter in the output destroys the deliverable. Path names, step numbers, retrieval notes, English scaffolding in a non-English voice — each one is a break in register that a correct answer cannot compensate for. Enforce OUTPUT CONTRACT's no-process-narration rule hardest here.
+- **The degradation notice still stays**, because a persona confabulating in a real person's voice is worse than a generic wrong answer, not better. Make it one short bracketed line in the voice's own language, and let nothing else leak.
+
 ## Mixed repos
 
 Common: a skills repo that also has conventions about how skills are written (A + B). Compile the archetype the user prompts against, and demote the other to invariants. A repo that is genuinely both, used both ways, is two Gems — say so rather than building one that does neither well.
