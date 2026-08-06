@@ -65,3 +65,7 @@ Symlink into your agent's skill directory:
 ```bash
 ln -s "$PWD" ~/.claude/skills/repo-to-project-instructions
 ```
+
+## License
+
+[MIT](LICENSE) © Ariel Lee
