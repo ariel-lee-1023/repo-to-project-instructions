@@ -101,7 +101,9 @@ Cut in this order: worked examples → process summaries (the fetch covers them)
 
 Write three probe prompts a user would plausibly send: one that must route to a specific unit, one ambiguous between two units, one that must route nowhere. For each, state the expected behaviour. Walk the FULL text as if you were the host — if a probe lands wrong, the routing table is at fault, not the probe.
 
-Say how to check the result, because the instructions forbid the host from narrating its own process: read the host's citation display, which records what was actually retrieved, or ask the Gem directly after the probe reply. Do not solve this by adding a standing instruction to announce the file it used — that is a self-report, and it can contradict the same reply's own degradation notice.
+Before probing, read the finished text once looking only for **clauses that order opposite behaviours** — a persona invariant against a disclosure rule, an output contract against a retrieval rule — and for **steps that cannot succeed**, such as searching a repository directory. Neither shows up as an error at runtime. The host obeys whichever clause is most concrete, usually the one that supplies literal wording, and does the wrong thing with full confidence. A degradation notice appearing on every probe reply is the signature of both faults at once: retrieval that never succeeds, plus a rule that announces it.
+
+Say how to check the routing result, because the instructions forbid the host from narrating its own process: read the host's citation display, which records what was actually retrieved, or ask the Gem directly after the probe reply. Do not solve this by adding a standing instruction to announce the file it used — that is a self-report, and it can contradict the same reply's own degradation notice.
 
 Deliver as files in the repo's own directory or the user's chosen output path:
 
