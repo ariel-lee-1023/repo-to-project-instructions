@@ -28,7 +28,7 @@ That's what this skill writes — an explicit `if the request looks like X → r
 
 ## What you get
 
-- **Three tiers** of instruction text — FULL, COMPACT, MINIMAL — so a moved character limit costs you one paste, not a rebuild.
+- **A single complete instruction text**, target ≤ 8,000 characters, ready to paste as-is — no tiers to choose between.
 - **A routing table** keyed on how you actually phrase requests, not on skill names.
 - **A degradation clause** — on a failed retrieval the host continues from the inline summary *and says so*, instead of confabulating.
 - **Knowledge bundles**, for private repos or hosts with unreliable browsing (`scripts/bundle-knowledge.sh`).

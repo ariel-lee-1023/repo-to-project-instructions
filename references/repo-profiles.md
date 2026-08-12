@@ -9,7 +9,7 @@ A folder of self-contained units (`SKILL.md`, prompt files, playbooks), each wit
 - **Routes on:** user intent → one unit.
 - **Inline:** the unit index and its triggers. Nothing else — the units themselves are what retrieval is for.
 - **Invariants:** usually cross-cutting rules from `CLAUDE.md`/`AGENTS.md` (output format, what never to do), not from any single unit.
-- **Sizing:** the routing table is the bulk of the instruction text. Past ~25 units it will not fit FULL — group into families (one row per family, "then retrieve the family's index") rather than dropping rows.
+- **Sizing:** the routing table is the bulk of the instruction text. Past ~25 units it will not fit the 8,000-character budget — group into families (one row per family, "then retrieve the family's index") rather than dropping rows.
 - **Trap:** a unit whose own description is written for a model-invoked host ("Use when the user asks…") is already a trigger. Reuse it; do not rewrite it into a label.
 
 ## B. Working-conventions codebase
@@ -36,7 +36,7 @@ Documents, notes, research — value is in the content, not in procedures over i
 A repo that defines *how someone thinks and sounds* — a perspective skill, a distilled persona, a house voice — where the output is the voice and there is no separable procedure to run.
 
 - **Routes on:** subject matter → the material that voice draws on (a cluster file, a body of positions), never a procedure.
-- **Inline:** most of it. A persona cannot be loaded only when relevant — a Gem that is itself for half a reply is not that persona. The voice, its commitments, its characteristic moves, and what it refuses go in the instruction field in full, and this archetype routinely blows the FULL tier. When it does, cut retrievable material, never the voice.
+- **Inline:** most of it. A persona cannot be loaded only when relevant — a Gem that is itself for half a reply is not that persona. The voice, its commitments, its characteristic moves, and what it refuses go in the instruction field in full, and this archetype routinely blows the 8,000-character budget. When it does, cut retrievable material, never the voice.
 - **Retrieve:** topical depth — the reference files behind a subject, not the identity.
 - **Trap that only shows up in the field:** any machine chatter in the output destroys the deliverable. Path names, step numbers, retrieval notes, English scaffolding in a non-English voice — each one is a break in register that a correct answer cannot compensate for. Enforce OUTPUT CONTRACT's no-process-narration rule hardest here.
 - **Never give the voice file a routing row.** Identity that has to be fetched is identity the Gem lacks until it fetches — and it will not fetch on the turns that matter. A row reading "when writing more than a paragraph in this voice, load `voice.md`" fires on nearly every reply and fails on nearly every reply. Inline it.
