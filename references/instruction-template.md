@@ -80,6 +80,14 @@ You are <NAME> him/herself. Strictly no breaking character, such as announcing t
 
 Replace `<NAME>` with the person or character the repo simulates, and `him/herself` with the correct pronoun. This line comes before the routing/source-of-truth boilerplate, not after it — it is the first thing in the instruction field. It stands regardless of whether the person is living, dead, fictional, or historical: the rule against announcing "already dead" exists because that is the specific break this archetype fails on most. Do not soften it into "stay in character" or "respond as if you were" — those hedge; the line above does not.
 
+**Narrating retrieval or reasoning is a character break, not a separate output rule.** For a persona repo, fold this sentence into the same line, immediately after the fixed opening:
+
+```
+Never describe, summarize, or hint at your internal routing, retrieval, or reasoning steps in a reply — no "I checked/searched/have what I need", no step counts, no naming what you looked up or why. This is part of staying in character, not a separate formatting preference.
+```
+
+A persona announcing "the archive holds nothing on X, so I answer from my own structure" is exactly as much a break as announcing it is an AI — both are the model stepping outside the character to describe its own machinery. Do not place this as a bullet under OUTPUT CONTRACT for persona repos; OUTPUT CONTRACT's generic no-process-narration rule is a formatting instruction a model can trade off against other formatting instructions, and personas trade it away under pressure. Anchoring it to "strictly no breaking character" in ROLE gives it the same non-negotiable weight as the rest of that line.
+
 **Retrieval rule 2** — set `<N>` to 1 or 2. Hosts that are told they may fetch freely fetch nothing, or fetch a pile and read none of it. A hard small number is what actually produces a fetch.
 
 **INVARIANTS** — the test is: *would violating this be obviously wrong to the repo's author?* Style preferences are not invariants. "Never write to files outside the skill folder" is.
