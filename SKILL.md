@@ -46,7 +46,9 @@ Classify against the four archetypes in [`references/repo-profiles.md`](referenc
 
 ## Step 2 — Extract the operating contract
 
-Three buckets, separated because they get different treatment downstream:
+**Filter for audience before you bucket.** A repo written for humans to maintain frequently contains rules that were never meant for the runtime host at all: audit ledgers, provenance/fidelity records, changelogs, contributor notes, scoring rubrics, calibration data annotated "never spoken" or "not loaded at runtime." These describe or grade the artifact; they do not tell the agent what to do on a turn. A file can also mix both in the same paragraph — an audit row phrased as an imperative ("if X is missing, say so") reads exactly like a rule even though its home file says it is a record. Two tells that a line is host-facing and belongs in Step 2's buckets, not left behind as color: it is phrased as an instruction (imperative, or "the agent/persona should/must…"), and the repo's own docs describe that file as something the runtime loads or reads. A line that fails either test — third-person description of the artifact, or explicitly marked as audit-only / human-only / not-loaded — is scoped out here: do not carry it into any bucket, and do not let it survive by accident inside a process summary or a quoted example. If such a line nonetheless states something the host truly needs at runtime (a real retrieval-failure behavior, say), that behavior gets *rewritten* in the voice/register the rest of the runtime rules use and placed in the correct bucket — never carried over verbatim from its audit-file phrasing, which is where the instruction-shaped-but-not-meant-for-the-host problem originates.
+
+Three buckets for what survives that filter, separated because they get different treatment downstream:
 
 - **Invariants** — rules that must hold on every single turn, retrieval or not. Naming conventions, forbidden actions, "always ask before X", required output format. These get inlined verbatim and are never abridged.
 - **Process** — ordered procedures for specific tasks. These get *summarized* inline and *fetched* in full when triggered.
@@ -54,7 +56,7 @@ Three buckets, separated because they get different treatment downstream:
 
 The failure mode here is copying prose. Copy *rules*. If a paragraph does not change what the agent does, it does not survive.
 
-**Done when:** every unit from Step 1 lands in exactly one bucket, and the invariant list is short enough to obey (if it exceeds ~10 items, some of them are process).
+**Done when:** every unit from Step 1 lands in exactly one bucket or is explicitly scoped out as audit/human-only, and the invariant list is short enough to obey (if it exceeds ~10 items, some of them are process).
 
 ## Step 3 — Build the routing table
 
@@ -97,6 +99,8 @@ If the filled template overruns 8,000 characters, cut in this order: worked exam
 Write three probe prompts a user would plausibly send: one that must route to a specific unit, one ambiguous between two units, one that must route nowhere. For each, state the expected behaviour. Walk the finished text as if you were the host — if a probe lands wrong, the routing table is at fault, not the probe.
 
 Before probing, read the finished text once looking only for **clauses that order opposite behaviours** — a persona invariant against a disclosure rule, an output contract against a retrieval rule — and for **steps that cannot succeed**, such as searching a repository directory. Neither shows up as an error at runtime. The host obeys whichever clause is most concrete, usually the one that supplies literal wording, and does the wrong thing with full confidence. A degradation notice appearing on every probe reply is the signature of both faults at once: retrieval that never succeeds, plus a rule that announces it.
+
+Run the Step 2 audience filter once more against the *finished* text, not just the source repo: if any surviving line still traces back to a file the repo itself calls an audit ledger, changelog, or "not loaded at runtime," that line got through as an instruction-shaped sentence riding along inside a process summary or a quoted example, and it will fire exactly like the persona invariants do — usually as a narrated self-report ("I checked X, it wasn't there, so…") that contradicts a "never disclose retrieval" clause sitting two paragraphs above it. Cut it or rewrite it in the host-facing register before delivering; do not leave both clauses in and hope the model picks the right one.
 
 Say how to check the routing result, because the instructions forbid the host from narrating its own process: read the host's citation display, which records what was actually retrieved, or ask the Gem directly after the probe reply. Do not solve this by adding a standing instruction to announce the file it used — that is a self-report, and it can contradict the same reply's own degradation notice.
 
