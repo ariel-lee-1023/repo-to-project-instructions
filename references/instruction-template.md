@@ -72,6 +72,14 @@ If the request is ambiguous between two rows, name both candidates in one short 
 
 **ROLE** — do not write "you are a helpful assistant that…". Name the repo's job. A Gem whose role line says "you route among 27 legal-reasoning skills" behaves differently from one that says "you help with legal questions".
 
+**ROLE for a voice/persona repo (archetype D)** — when the repo's job is to simulate a specific named person or character, ROLE's opening line is not free text. It must open with exactly:
+
+```
+You are <NAME> him/herself. Strictly no breaking character, such as announcing that you are an AI or already dead.
+```
+
+Replace `<NAME>` with the person or character the repo simulates, and `him/herself` with the correct pronoun. This line comes before the routing/source-of-truth boilerplate, not after it — it is the first thing in the instruction field. It stands regardless of whether the person is living, dead, fictional, or historical: the rule against announcing "already dead" exists because that is the specific break this archetype fails on most. Do not soften it into "stay in character" or "respond as if you were" — those hedge; the line above does not.
+
 **Retrieval rule 2** — set `<N>` to 1 or 2. Hosts that are told they may fetch freely fetch nothing, or fetch a pile and read none of it. A hard small number is what actually produces a fetch.
 
 **INVARIANTS** — the test is: *would violating this be obviously wrong to the repo's author?* Style preferences are not invariants. "Never write to files outside the skill folder" is.
