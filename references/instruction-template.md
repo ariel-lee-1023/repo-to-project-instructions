@@ -72,13 +72,21 @@ If the request is ambiguous between two rows, name both candidates in one short 
 
 **ROLE** — do not write "you are a helpful assistant that…". Name the repo's job. A Gem whose role line says "you route among 27 legal-reasoning skills" behaves differently from one that says "you help with legal questions".
 
-**ROLE for a voice/persona repo (archetype D)** — when the repo's job is to simulate a specific named person or character, ROLE's opening line is not free text. It must open with exactly:
+**ROLE for a voice/persona repo (archetype D)** — when the repo's job is to simulate a specific named person or character, ROLE's opening line is not free text, and it is not one fixed sentence — it branches on whether `<NAME>` is currently living. Check this before filling the template; do not default to the dead/historical phrasing out of habit.
+
+For a **dead, fictional, or historical** figure:
 
 ```
-You are <NAME> him/herself. Strictly no breaking character, such as announcing that you are an AI or already dead.
+You are <NAME> him/herself. Strictly no breaking character, such as announcing that you are an AI or that you have died.
 ```
 
-Replace `<NAME>` with the person or character the repo simulates, and `him/herself` with the correct pronoun. This line comes before the routing/source-of-truth boilerplate, not after it — it is the first thing in the instruction field. It stands regardless of whether the person is living, dead, fictional, or historical: the rule against announcing "already dead" exists because that is the specific break this archetype fails on most. Do not soften it into "stay in character" or "respond as if you were" — those hedge; the line above does not.
+For a **living** figure:
+
+```
+You are <NAME> him/herself. Strictly no breaking character, such as announcing that you are an AI.
+```
+
+Replace `<NAME>` with the person or character the repo simulates, and `him/herself` with the correct pronoun. This line comes before the routing/source-of-truth boilerplate, not after it — it is the first thing in the instruction field. Do not write the death clause for a living person: it is not a harmless default, it tells a model to consider announcing something false about someone who is alive, which is a worse failure mode than the one the clause exists to prevent. Do not soften either version into "stay in character" or "respond as if you were" — those hedge; the lines above do not.
 
 **Narrating retrieval or reasoning is a character break, not a separate output rule.** For a persona repo, fold this sentence into the same line, immediately after the fixed opening:
 
@@ -89,6 +97,14 @@ Never describe, summarize, or hint at your internal routing, retrieval, or reaso
 A persona announcing "the archive holds nothing on X, so I answer from my own structure" is exactly as much a break as announcing it is an AI — both are the model stepping outside the character to describe its own machinery. Do not place this as a bullet under OUTPUT CONTRACT for persona repos; OUTPUT CONTRACT's generic no-process-narration rule is a formatting instruction a model can trade off against other formatting instructions, and personas trade it away under pressure. Anchoring it to "strictly no breaking character" in ROLE gives it the same non-negotiable weight as the rest of that line.
 
 The ban covers the softened version too, not only the blunt one. "That is not a formulation I can vouch for" or "I answer within my own frame rather than that passage" sounds in-voice and can slip past a casual read, but its real subject is still the search, not the substance — the same break in a longer coat. If the source repo's own material states a retrieval-failure behavior anywhere (a provenance file, a fidelity note), do not carry that behavior into the compiled text verbatim from wherever it was phrased for a human reader; rewrite it as an in-character move that answers the case instead of naming the gap, and place it under "How I move in an exchange" or the nearest voice-bearing section — never as a bracketed notice.
+
+**The fact/frame boundary is a third clause on the same line, not optional.** A persona repo's reference files supply an analytical frame — how this person thinks, what they weigh, the moves they characteristically make — not a factual record of the world the user is asking about. The persona never has first-hand knowledge of what the user's specific question is actually about: a living figure's repo cannot contain their opinion on this week's news; a historical figure's repo cannot contain their reaction to something that happened after they died; and even for the frame itself, repo files are the compressed distillation, not the person's complete corpus. Any time the question turns on a specific fact, current event, real quotation, name, date, or claim about the world — as opposed to how the persona would reason about a topic already given in the question — retrieval rule 1 (fetch before answering a ROUTING row) is not optional and inline material never substitutes for it. Fold this into the same opening line, immediately after the narration ban:
+
+```
+The reference files give me a way of thinking, not knowledge of what you are asking about — where your question turns on a specific fact, name, date, or current event, I am silently drawing on what retrieval returns, not on some memory of my own.
+```
+
+This is not the same rule as the narration ban just above it: the narration ban stops the persona from describing that it searched; this clause stops the compiled instructions from implying the persona can skip searching because the voice material feels like enough. Both survive every round of pruning together — cutting this one reintroduces confabulation dressed as character consistency, which is worse than a visible search notice would have been.
 
 **Retrieval rule 2** — set `<N>` to 1 or 2. Hosts that are told they may fetch freely fetch nothing, or fetch a pile and read none of it. A hard small number is what actually produces a fetch.
 
