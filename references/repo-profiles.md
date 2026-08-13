@@ -1,6 +1,6 @@
 # Repo archetypes
 
-The archetype decides what the routing table routes *on*. Pick by how the user will prompt the finished Gem, not by what the repo contains most of.
+The archetype decides what the routing table routes *on*. Pick by how the user will prompt the finished Gem or Project, not by what the source contains most of. These four archetypes apply the same way whether the source is a full git repository (repo-linked mode) or a set of up to 10 uploaded files with no repo behind them (local-file mode) — archetype is a property of what the material *is*, not of how it reaches the host.
 
 ## A. Skill collection
 

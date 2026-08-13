@@ -1,50 +1,62 @@
 ---
 name: repo-to-project-instructions
-description: "Compiles a git repository into ready-to-paste custom instructions for hosts that cannot clone or execute a repo — Gemini Gem instructions, Grok Project instructions, ChatGPT Project instructions, or any bare system prompt. The compiled text is a routing layer used alongside the repo link, not a replacement for it: the repo stays the source of truth and the instructions say what to retrieve from it and when. Use when the user gives a repo URL and asks for Gem, Project, or custom instructions; wants a skills repo usable on Gemini or Grok; asks to port skills, prompts, or working conventions to another AI host; or asks how to make a Gem follow a repository. Not for editing the repo itself."
+description: "Compiles a git repository, or a set of up to 10 user-uploaded local files, into ready-to-paste custom instructions for hosts that cannot clone/execute a repo or hold a live link to one — Perplexity Project instructions, Gemini Gem instructions, Grok Project instructions, ChatGPT Project instructions, or any bare system prompt. The compiled text is a routing layer used alongside the source, not a replacement for it: the source stays the source of truth and the instructions say what to retrieve from it and when. Use when the user gives a repo URL and asks for Project, Gem, or custom instructions; gives up to 10 local files to upload as a Gem's knowledge base and asks for instructions to match; wants a skills repo usable on Perplexity, Gemini, or Grok; asks to port skills, prompts, or working conventions to another AI host; or asks how to make a Gem or Project follow a repository or a fixed set of files. Not for editing the repo or the uploaded files themselves."
 ---
 
 # Repo → Project Instructions
 
-Gemini Gems, Grok Projects, and ChatGPT Projects cannot clone a repo, list a tree, or run its scripts. They have three things: a persistent instruction field, optional uploaded knowledge files, and (sometimes) web fetch at answer time. This skill compiles a repo into exactly those three things.
+Perplexity Projects, Gemini Gems, Grok Projects, and ChatGPT Projects cannot clone a repo, list a tree, or run its scripts. What they have is: a persistent instruction field, optional uploaded knowledge files, and — for hosts whose knowledge can hold a live link — retrieval from that link at answer time. This skill compiles a source into exactly those things.
 
-A link or an upload buys **access** only. **Routing** — knowing which file governs this request and retrieving it before answering — and **compliance** — following a procedure rather than summarising it — come from the instruction field or not at all. Ingesting the whole repo as knowledge does not substitute for either.
+Two input modes, chosen by what the target host can actually hold, not by preference:
 
-**The compiled text works with the repo, not instead of it.** The repo remains the source of truth and holds the full text of everything; the instructions carry the index, the invariants, and the rules for reaching back into the repo — the layer a host cannot derive on its own. Compress toward pointers, not toward a self-contained copy.
+- **Repo-linked** — the host's knowledge can persist a link back to a git repo and retrieve from it (Perplexity Project: yes, via Project Knowledge and instructions that cite a path; generic/Grok/ChatGPT: check `references/host-notes.md`). The repo stays the long-lived source of truth.
+- **Local-file** — the host's knowledge only accepts static uploads, capped at a small file count, with no live link (Gemini Gem: Knowledge takes uploaded files or Drive, not a persistent GitHub URL — see `references/host-notes.md`). The input here is **up to 10 files the user uploads**, which may be exported from a repo or may be any local material with no repo behind it at all. Those ≤10 files *are* the source of truth for the Gem's lifetime; there is nothing further to fetch.
 
-Within that, the deliverable must **work with zero successful fetches** and get *better* when fetches succeed — never one that collapses when browsing is off.
+Determine the mode from what the user hands you: a URL means repo-linked (unless the target host is local-file-only, in which case say so and ask them to export/upload instead); a batch of attached files means local-file.
+
+A link or an upload buys **access** only. **Routing** — knowing which file governs this request and retrieving it before answering — and **compliance** — following a procedure rather than summarising it — come from the instruction field or not at all. Ingesting everything as knowledge does not substitute for either.
+
+**The compiled text works with the source, not instead of it.** In repo-linked mode the repo remains the source of truth and holds the full text of everything; the instructions carry the index, the invariants, and the rules for reaching back into the repo. In local-file mode the uploaded files play that role instead, with no link to refresh — the instructions still carry an index and routing across them, just without a commit SHA or a fetch-failure branch to design around.
+
+Within that, the deliverable must **work with zero successful fetches** (repo-linked) or **route correctly across a fixed file set** (local-file), and get *better* when fetches succeed in repo-linked mode — never one that collapses when browsing is off.
 
 ## Inputs
 
-Required: a git repo URL. Everything else is inferred, and only asked about if the answer changes the output:
+Required: either a git repo URL (repo-linked mode) or a set of up to 10 local files the user is uploading (local-file mode) — ask which one applies if it is not obvious from what they gave you. Everything else is inferred, and only asked about if the answer changes the output:
 
-- **Host** — Gemini Gem, Grok Project, ChatGPT Project, or generic. Ask if unstated; the packaging differs (see [`references/host-notes.md`](references/host-notes.md)).
-- **Subpath** — when only part of the repo matters (`skills/engineering/`, one skill folder).
-- **Language** — default to the repo's dominant working language; the user's chat language does not override it unless they say so.
+- **Host** — Perplexity Project, Gemini Gem, Grok Project, ChatGPT Project, or generic. Ask if unstated; the packaging differs, and for local-file mode the host determines the 10-file cap in the first place (see [`references/host-notes.md`](references/host-notes.md)).
+- **Subpath** (repo-linked only) — when only part of the repo matters (`skills/engineering/`, one skill folder).
+- **Which files, if more than 10 are offered** (local-file only) — the cap is hard; if the user hands you more than 10 candidate files, ask them to pick the 10 that matter most rather than silently dropping the tail ones yourself.
+- **Language** — default to the source's dominant working language; the user's chat language does not override it unless they say so.
 
-Private repo, or a host with no browsing: raw URLs are dead. Say so early and go knowledge-file-only (Step 4).
+Private repo, or a repo-linked host with no browsing: raw URLs are dead. Say so early and go knowledge-file-only (Step 4). If the target host is local-file-only (Gemini Gem) and the user only gave a repo URL, tell them up front that the link itself cannot go into Knowledge and ask them to export/download the relevant files and upload up to 10, then proceed in local-file mode.
 
 ## Step 1 — Survey and pin
 
-Resolve `owner`, `repo`, `ref`, `subpath` from the URL, and pin `ref` to a **commit SHA** rather than a branch name, so the compiled instructions describe a repo state that cannot shift under them. Record the SHA and today's date. The raw file base is the only URL form worth putting in front of a host, because it returns plain text with no JS:
+**Repo-linked mode:** Resolve `owner`, `repo`, `ref`, `subpath` from the URL, and pin `ref` to a **commit SHA** rather than a branch name, so the compiled instructions describe a repo state that cannot shift under them. Record the SHA and today's date. The raw file base is the only URL form worth putting in front of a host, because it returns plain text with no JS:
 
 ```
 https://raw.githubusercontent.com/<owner>/<repo>/<sha>/<path>
 ```
 
-Confirm one raw URL actually returns file content before building a map of forty of them — fetch it if the host has network access, otherwise shallow-clone locally.
+Confirm one raw URL actually returns file content before building a map of forty of them — fetch it if the host has network access, otherwise shallow-clone locally. For a Perplexity Project target, also check whether Project Knowledge can import the repo directly (see [`references/host-notes.md`](references/host-notes.md)) — where it can, that stands in for the raw-URL fetch path and the instructions cite Knowledge instead of a live URL.
 
-Then read, in this order, stopping when you can state what the repo is for in one sentence:
+**Local-file mode:** There is no URL to resolve or SHA to pin. Take the up-to-10 files as handed to you, in the order the user gave them unless their content implies a natural entry point (an index or README-like file goes first). Record today's date only — there is no commit state to describe. If the files were exported from a repo, note the repo name if the user mentions it, purely as color; it is not a retrievable source and nothing in the compiled instructions should imply it is.
 
-1. `README.md`
-2. Agent-facing law: `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `CONTRIBUTING.md`, `.agents/`
-3. The unit files — every `SKILL.md` frontmatter for a skills repo; the top-level module layout for a codebase
+Then read, in this order, stopping when you can state what the source is for in one sentence:
+
+1. `README.md` (repo-linked) or whichever uploaded file most resembles one (local-file)
+2. Agent-facing law: `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `CONTRIBUTING.md`, `.agents/` — repo-linked only; local-file mode rarely has these, skip if absent rather than treating their absence as a gap
+3. The unit files — every `SKILL.md` frontmatter for a skills repo; the top-level module layout for a codebase; for local-file mode, whatever the uploaded files' own headings organize into
 4. Anything the above three explicitly point at
 
-Classify against the four archetypes in [`references/repo-profiles.md`](references/repo-profiles.md) — **skill collection**, **working-conventions codebase**, **knowledge corpus**, **voice/persona** — because the archetype decides what the routing table routes *on*, and for a voice repo it decides that most of the material cannot be left retrievable at all. A repo can be two of them; pick the one that matches how the user will actually prompt the Gem.
+Classify against the four archetypes in [`references/repo-profiles.md`](references/repo-profiles.md) — **skill collection**, **working-conventions codebase**, **knowledge corpus**, **voice/persona** — because the archetype decides what the routing table routes *on*, and for a voice repo it decides that most of the material cannot be left retrievable at all. A source can be two of them; pick the one that matches how the user will actually prompt the Gem or Project. The archetypes apply the same way to a 10-file local set as to a full repo — archetype is about what the material *is*, not how it is delivered.
 
-For a voice/persona repo, also check now whether the simulated person is currently living — do not assume from the repo's own tone or era of source material, verify it. This decides which persona-opening-line variant Step 5 must use (`references/instruction-template.md` → "ROLE for a voice/persona repo") and is wrong to get wrong: the dead/historical phrasing put in front of a living person's simulation is not a neutral default.
+For a voice/persona source, also check now whether the simulated person is currently living — do not assume from the source's own tone or era of material, verify it. This decides which persona-opening-line variant Step 5 must use (`references/instruction-template.md` → "ROLE for a voice/persona repo") and is wrong to get wrong: the dead/historical phrasing put in front of a living person's simulation is not a neutral default.
 
-**Done when:** you have a pinned SHA, one verified raw URL, a named archetype (plus, for archetype D, a living/dead determination), and a list of every retrievable unit with its path.
+**Done when (repo-linked):** you have a pinned SHA, one verified raw URL (or a confirmed Knowledge import), a named archetype (plus, for archetype D, a living/dead determination), and a list of every retrievable unit with its path.
+
+**Done when (local-file):** you have today's date, a named archetype (plus, for archetype D, a living/dead determination), and a list of all ≤10 uploaded files with the role each plays.
 
 ## Step 2 — Extract the operating contract
 
@@ -72,13 +84,20 @@ Add a final catch-all row: what to do when nothing matches (usually: answer norm
 
 ## Step 4 — Choose the retrieval strategy
 
-- **Link-only** — public repo, host can browse. Smallest setup, always current at the pinned SHA, dies when browsing is off.
-- **Knowledge-file** — private repo, no browsing, or a repo small enough to ingest whole. Check first whether the host imports a repo natively (Gemini's Knowledge → Import code); where it does, that replaces the bundling step and leaves no second copy to go stale. Otherwise run [`scripts/bundle-knowledge.sh`](scripts/bundle-knowledge.sh) to concatenate the markdown into a handful of bundles under the host's file cap. Either way the instructions cite repo paths, which the import or the bundle headers preserve.
-- **Hybrid** (default when in doubt) — bundle the high-traffic units as knowledge files, link the long tail. The instructions then say: check knowledge files first, fetch only what is not there.
+**Local-file mode has only one strategy.** There is no browsing to lose and nothing to bundle — the ≤10 uploaded files already sit in the host's Knowledge. The instructions cite each file by name and treat "not in any uploaded file" as the whole degradation branch (no SHA, no raw URL, no re-fetch). Skip the rest of this step and go to Step 5.
 
-[`references/host-notes.md`](references/host-notes.md) has the per-host mechanics and the setup steps to hand the user.
+**Repo-linked mode** chooses among:
 
-**Done when:** the strategy is chosen and, if bundling, the bundle files exist and their headings match what the instructions will cite.
+- **Native import** — check first whether the target host imports a repo directly into its Knowledge (Perplexity Project Knowledge, Gemini's Knowledge → Import code). Where it does, that replaces the bundling step and leaves no second copy to go stale, and the instructions cite repo paths the way the import preserves them. Prefer this whenever the host offers it.
+- **Link-only** — public repo, host can browse, no native import available or desired. Smallest setup, always current at the pinned SHA, dies when browsing is off.
+- **Knowledge-file (bundled)** — private repo, no browsing, no native import, or a repo small enough to ingest whole. Run [`scripts/bundle-knowledge.sh`](scripts/bundle-knowledge.sh) to concatenate the markdown into a handful of bundles under the host's file cap. The instructions cite repo paths, which the bundle headers preserve.
+- **Hybrid** (default when in doubt, repo-linked only) — bundle or import the high-traffic units as knowledge, link the long tail. The instructions then say: check knowledge first, fetch only what is not there.
+
+[`references/host-notes.md`](references/host-notes.md) has the per-host mechanics and the setup steps to hand the user, including which hosts support native import versus link-only versus local-file-only.
+
+**Done when (repo-linked):** the strategy is chosen and, if bundling, the bundle files exist and their headings match what the instructions will cite.
+
+**Done when (local-file):** all ≤10 files are named exactly as the user will upload them, and every routing row's "Retrieve" column names one of those files.
 
 ## Step 5 — Write to budget
 
@@ -106,12 +125,16 @@ Run the Step 2 audience filter once more against the *finished* text, not just t
 
 For archetype D specifically, re-read the finished ROLE line once against the living/dead determination from Step 1: confirm the death clause is present if and only if the person is actually dead, fictional, or historical, and confirm the fact/frame boundary sentence is present regardless — a persona line missing that sentence will answer a user's specific real-world question out of voice material alone instead of retrieval, and that failure never shows up as an error either.
 
-Say how to check the routing result, because the instructions forbid the host from narrating its own process: read the host's citation display, which records what was actually retrieved, or ask the Gem directly after the probe reply. Do not solve this by adding a standing instruction to announce the file it used — that is a self-report, and it can contradict the same reply's own degradation notice.
+Say how to check the routing result, because the instructions forbid the host from narrating its own process: read the host's citation display, which records what was actually retrieved, or ask the Gem/Project directly after the probe reply. Do not solve this by adding a standing instruction to announce the file it used — that is a self-report, and it can contradict the same reply's own degradation notice.
 
-Deliver as files in the repo's own directory or the user's chosen output path:
+Deliver as files in the repo's own directory (repo-linked) or the user's chosen output path (either mode):
 
-- `<repo>-gem-instructions.md` (or `-project-`), containing the single complete instruction text in one fenced block ready to copy, with its character count stated
-- knowledge bundles, if Step 4 produced them
-- a short setup section: where to paste, what to upload, and the one-line refresh instruction (re-run against a newer SHA when the repo changes)
+- `<repo-or-project-name>-gem-instructions.md` (or `-project-instructions.md` for a Perplexity/ChatGPT Project target), containing the single complete instruction text in one fenced block ready to copy, with its character count stated
+- knowledge bundles, if Step 4 produced them (repo-linked only)
+- a short setup section:
+  - **repo-linked** — where to paste, what to upload or import, and the one-line refresh instruction (re-run against a newer SHA when the repo changes)
+  - **local-file** — where to paste the instructions, the exact list of ≤10 files to upload in the order to upload them, and a note that refreshing means re-running this skill against a new file set — there is no link to re-fetch from
 
-State the pinned SHA and survey date in the delivery. Instructions compiled from a moving repo go stale silently, and the SHA is what makes that detectable.
+**Repo-linked:** state the pinned SHA and survey date in the delivery. Instructions compiled from a moving repo go stale silently, and the SHA is what makes that detectable.
+
+**Local-file:** state the survey date and the exact file list in the delivery. Instructions compiled from a local-file set go stale only when the user replaces a file without re-running this skill — say that explicitly, since there is no SHA to signal it for them.
