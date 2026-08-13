@@ -136,6 +136,47 @@ Watch for **instructions that cannot possibly succeed**. Pointing a host at a re
 
 ---
 
+## Session-opening message template
+
+This is the session-opening mode deliverable (Gemini Spark or an equivalent host with no persistent instructions field). It is not the template above filled in shorter — it is a different artifact: one chat message, sent once per session alongside the attached repo link, that has to do in a single turn what the template above does across a whole persistent field. Keep it under roughly 150 words in the repository's dominant working language.
+
+```markdown
+<Opening clause — names the repo's actual subject in the first ~10–15 words, doubles as the session-title cue. Not "帮我看一下这个仓库", not "你会用这个吗" — those name the task of reading, not the subject.>
+
+<Role, one sentence — a standing role for the rest of the session, not a one-off request.>
+
+<Compressed routing, 2–4 sentences — the few triggers a real first turn will actually hit, collapsed from the ROUTING table into plain language. "如果我发...就...；如果我说...就...">
+
+<Invariants that cannot wait, 1–3 short imperatives — only the ones that would already be wrong by the second message if unstated.>
+
+<One line: what to do if the link cannot be read — continue from what you can infer from the repo name/description, say so, do not invent content.>
+```
+
+**Worked example**, from a TOEFL 2026 writing-and-speaking rubric repo, in the repo's own working language:
+
+```markdown
+帮我备考2026新版托福写作与口语——这份仓库是ETS新规范下的题型要求、评分标准和范文模板。
+
+从现在起你是我的托福写作与口语教练，按这份仓库的规范出题、批改和给模板，不要用旧版托福的题型或标准。
+
+如果我说"出题"，按邮件写作、学术讨论写作、口语面试、听记重复四种题型给新题；如果我发的是我写的回答，按仓库里的评分标准批改并给改进建议；如果我问模板或高分句式，直接给对应题型的参考。
+
+批改时不要泛泛而谈，指出具体的语法、词汇或结构问题。
+
+如果链接打不开或内容取不到，直接说取不到，别凭旧版托福的印象编评分标准或题型。
+```
+
+Notice what this example is *not*: it does not summarize the repo ("这个仓库讲的是…"), does not ask permission to proceed ("我可以帮你吗"), and does not open with a bare attachment and no accompanying text — all three of those are exactly what produces a flat, subject-blind session title. The first several words alone ("帮我备考2026新版托福写作与口语") carry the naming signal; everything after is the operating contract for the rest of the session.
+
+**Filling notes specific to this mode:**
+
+- **The opening clause does double duty and that is the point.** It is simultaneously the first thing the model reads and the text the host's session-namer most heavily weights. A clause that is only good for one of those two jobs is not finished. Test it by asking: if a title-generator saw only these first 15 words, would the title it produces name this repo's actual subject? If not, rewrite the opening before touching anything else in the message.
+- **Do not import ROLE's persona-opening-line machinery from the main template into this mode by default.** If the source is archetype D (voice/persona), the living/dead branch and the narration-ban/fact-frame-boundary sentences from "ROLE for a voice/persona repo" above still apply and still go first, before the subject-naming clause — but check whether a session-opening persona message can even carry both jobs at once (persona opening line, subject-naming clause) inside a 150-word budget; if it cannot, the persona opening line wins and the user is told plainly that session titles will be generic for this repo in session-opening mode.
+- **There is no SOURCE OF TRUTH section and no bundle citation syntax.** The repo link attached to the message *is* the source of truth for that turn; there is nothing to point at with a raw-URL path because the host fetches the attachment directly, not a path inside it that this message names.
+- **Retrieval rules 3–5 from the main template collapse into the single degradation line.** There is no multi-file routing to protect against partial retrieval failure in this mode — either the attached link resolves or it does not, for the whole session, so the message only needs one branch instead of the main template's numbered rules.
+
+---
+
 ## Worked fragment
 
 From a skills repo with a `skills/engineering/` folder, three units shown:
