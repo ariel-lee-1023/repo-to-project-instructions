@@ -39,16 +39,16 @@ That's what this skill writes — an explicit `if the request looks like X → r
 | Compiled opening message (session-opening) | Compressed role, routing, and invariants | Sent as a chat message, attached to the repo link, at the start of every session |
 | The repo (repo-linked, session-opening) | Full text of every skill, doc, and convention | Retrieved on demand at a pinned commit and held in Project Knowledge (repo-linked), or fetched live from the attached link each session with nothing persisted (session-opening) |
 | The uploaded files (local-file mode) | Full text of what the user chose to bring, up to 10 files | Uploaded once to Gem Knowledge; there is no link to refresh |
-| Knowledge bundles (optional, repo-linked mode) | The same repo text, pre-uploaded | For private repos or hosts whose browsing is unreliable |
+| Knowledge bundles (explicit request only, repo-linked mode) | The same repo text, pre-uploaded | Optional packaging; not part of an ordinary instructions request |
 
 ## What you get
 
-- **A single complete instruction text** (repo-linked, local-file), target ≤ 8,000 characters, ready to paste as-is — no tiers to choose between.
+- **One complete copyable instruction text per requested project** (repo-linked, local-file), delivered directly in the reply and matched to the user's host and source files. Each final version is programmatically counted against the requested character/word limit; without a supplied limit, persistent instructions target ≤ 8,000 characters. “Less than 8,000” means strictly fewer than 8,000. The actual count appears outside the copyable text.
 - **A single complete opening message** (session-opening), target under ~150 words, ready to send alongside the attached repo link at the start of every session — including an opening clause designed to steer the host's auto-generated session title toward the repo's actual subject.
 - **A routing table** keyed on how you actually phrase requests, not on skill or file names — inlined in full (repo-linked, local-file) or compressed to its highest-traffic rows (session-opening).
 - **A degradation clause** — on a failed retrieval the host continues from the inline summary *and says so*, instead of confabulating.
-- **Knowledge bundles**, for private repos or hosts with unreliable browsing (`scripts/bundle-knowledge.sh`) — repo-linked mode only.
-- **Three probe prompts** with expected routing (repo-linked, local-file), or one title-naming probe (session-opening), so you can verify the port before trusting it.
+- **No unsolicited file packaging.** Instructions accompanying existing documents cite those documents. Knowledge bundles, archives, and downloadable instruction files are produced only when explicitly requested; the bundling helper remains available for that purpose.
+- **Internal routing checks:** three probe prompts with expected routing (repo-linked, local-file), or one title-naming probe (session-opening). Probe details are delivered only when requested and are not represented as live host tests.
 
 ## Use
 

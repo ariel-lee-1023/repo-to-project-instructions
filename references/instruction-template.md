@@ -4,6 +4,8 @@ Fill the placeholders. Keep the section order. Everything in `<angle brackets>` 
 
 Write the finished text in the repository's dominant working language. Section headers stay in English — they are structural anchors, and mixed-language headers degrade adherence less than a fully translated skeleton does.
 
+Deliver the filled text directly as a copyable block by default. Follow SKILL.md Step 5: programmatically count the exact final text against the user's unit and strict/inclusive limit, recount after any edit, and state the count outside the block. Use the user's existing source arrangement; create bundles or downloadable files only when explicitly requested.
+
 ---
 
 ## The template
@@ -25,7 +27,10 @@ You work from a fixed set of <N ≤ 10> uploaded files (surveyed <YYYY-MM-DD>). 
 Raw file base — append a path from the ROUTING table:
 https://raw.githubusercontent.com/<owner>/<repo>/<SHA>/
 
-<If knowledge files are used instead, replace or supplement with:>
+<If the user will use individual project files, replace or supplement with:>
+Uploaded project files: <exact filenames>. Repository paths below identify these files; match their basenames if the upload does not preserve directories. Retrieve the named file before its associated task. Do not assume a repo link synchronizes these uploads.
+
+<Only if the user already supplied bundles or explicitly requested their creation:>
 Uploaded knowledge files: <bundle-01.md … bundle-NN.md>. Each bundle contains multiple repository files separated by `===== FILE: <path> =====` headers. Search the bundles by that path first; fetch from the web only when the path is absent from every bundle.
 
 <Local-file mode:>

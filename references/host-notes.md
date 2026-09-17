@@ -2,7 +2,7 @@
 
 What each host actually gives you, where the ports break, and the setup steps to hand the user.
 
-**Verify limits in the product UI at build time.** Instruction-field caps, knowledge-file counts, and per-file size limits change without notice on all of these. Nothing below states a host-specific number, on purpose — Step 5 targets a single ≤ 8,000-character instruction text, which clears every host's field cap as of writing with room to spare, so a moved limit still costs at most a trim, not a rebuild.
+**Use the user's stated limit and setup.** Apply SKILL.md Step 5 to measure each exact final block before delivery. The ≤ 8,000-character default is a drafting budget, not a verified cap for every host. Verify current host limits only when needed; do not delay copy requested under an explicit limit with optional UI checks. These notes describe source-access options, not authorization to create uploads: deliver copyable text by default, and create bundles only on explicit request.
 
 ## The three capabilities
 
@@ -20,9 +20,9 @@ A Project has **Name**, **Description**, **Instructions**, member/collaborator a
 
 - **Instructions** is the field this skill's output goes into — same role as a Gem's Instructions field, applied on every thread started inside the Project.
 - **Knowledge here is durable and file-based**, similar in mechanics to a Gem's Knowledge, but the Project also keeps its own wiki/notes that accumulate over time. Treat uploaded repo files or bundles the same way as Gem knowledge files: retrieval, not obligation — ROUTING in Instructions is still what makes the right file get used at the right moment.
-- **This is the host to prefer when the source is a git repo and the user wants ongoing, linkable access to it** — unlike a Gem, a Project's Instructions can legitimately cite a repo path or raw URL as something to fetch on demand, and the Project's own Knowledge can hold an imported or bundled copy alongside that link as a fallback. This makes hybrid (Step 4) the natural default for a Project target, not just the fallback-when-in-doubt.
+- **For ongoing, linkable repo access**, instructions may cite verified raw URLs alongside the user's existing Knowledge files or imports. If the user instead wants instructions to accompany files, route to those filenames. Do not create bundles to establish a hybrid setup unless requested.
 - Web-fetch reliability inside a Project thread should be verified the same way as any other host: run the Step 6 probes and check the citation display before trusting link-only.
-- Setup to hand the user: create or open the Project → paste the complete instruction text into Instructions → add Knowledge (upload the bundles, or add the relevant files/wiki pages) → run the three probes from Step 6 before trusting it.
+- Setup, when requested: create or open the Project → paste the complete instruction text into Instructions → add the referenced source files/wiki pages or existing imports → check routing with the Step 6 probes. Bundles are optional and explicitly requested only.
 
 ## Gemini Gem
 
@@ -30,7 +30,7 @@ The editor exposes **Name**, **Description**, **Instructions**, **Default tool**
 
 - Name and Description label the Gem in the picker. Behaviour goes in **Instructions** — that is the field applied on every turn. Do not spend instruction budget restating the description.
 - **Gem Knowledge does not hold a live link back to a git repository.** It only accepts static uploads — files the user attaches, or files added from Drive. Pasting a GitHub URL into Knowledge does not create a persistent, refreshable source the way it might on a host with native repo import; treat any git repo as something that must be turned into files *before* it reaches Knowledge, not something the Gem retrieves from directly. This is why local-file mode (see `SKILL.md`) exists as its own path rather than a repo-linked fallback.
-- **The practical workflow for a Gem is local-file mode: the user uploads up to 10 files, and those files are the entire Knowledge base for the Gem's lifetime.** If the source is a git repo, the user (or `bundle-knowledge.sh`) turns the relevant parts into a small set of files first — either the repo's own markdown files directly (if ≤10 and each under the size cap) or a handful of concatenated bundles. Either way, cap the count at 10 and design ROUTING around exactly those file names.
+- **The practical workflow for a Gem is local-file mode: the user uploads up to 10 files, and those files are the entire Knowledge base for the Gem's lifetime.** If the source is a git repo, design ROUTING around the original files the user will upload. Existing bundles may be used; create new bundles with `bundle-knowledge.sh` only if explicitly requested. Respect the applicable upload limit without silently dropping files or expanding a copywriting request into packaging.
 - **Knowledge is retrieval, not obligation.** Uploading every file makes the text findable; it does not make the Gem *run* the right unit at the right moment. That comes only from ROUTING in the instruction field. A fully ingested knowledge base still needs compiled instructions — this is the single most common wrong assumption about the port.
 - **Default tool** — check what it offers. If a search or browsing tool can be set as the default, that increases reliability for anything the instructions ask it to look up on the open web, but it does not restore a live link to the source repo — that capability is not present in Gem Knowledge regardless of Default tool.
 - **Disable Knowledge Citations** — leave citations *on* while probing. They are the only mechanical record of which file was actually retrieved, and therefore the only trustworthy way to tell a bad routing row from a bad answer. The model's own account of what it followed is not a substitute: a Gem has been observed opening a reply with *could not retrieve X* and closing it with *followed X*. Turn citations off only after the probes pass, and only if they intrude on the output.
@@ -75,9 +75,9 @@ Any host with a single system-prompt field and no uploads: paste the same comple
 
 Raw URLs require the file to be public. For a private repo:
 
-- Knowledge-file strategy only (repo-linked mode), or switch to local-file mode outright if the target host is a Gem — either way, bundle or export from a local clone.
+- Use the user's project files (repo-linked mode), or switch to local-file mode if appropriate. Inspect an accessible local clone when available; do not create bundles or exports unless requested.
 - The instructions must not contain raw URLs at all — a broken fetch attempt against a private repo produces a confident-sounding 404 narrative.
-- Never put a token in the instruction text to make a raw URL work. If the user proposes it, decline and point at bundling.
+- Never put a token in the instruction text to make a raw URL work. Use the existing project-file arrangement instead.
 
 ## Local-file mode applies regardless of whether a repo exists
 
