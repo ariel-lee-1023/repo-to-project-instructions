@@ -6,6 +6,8 @@ Write the finished text in the repository's dominant working language. Section h
 
 Deliver the filled text directly as a copyable block by default. Follow SKILL.md Step 5: programmatically count the exact final text against the user's unit and strict/inclusive limit, recount after any edit, and state the count outside the block. Use the user's existing source arrangement; create bundles or downloadable files only when explicitly requested.
 
+The compiled instructions end with OUTPUT CONTRACT. Do not append LIMITS or an equivalent section; follow SKILL.md Step 5 rather than relocating the removed boilerplate under another heading.
+
 ---
 
 ## The template
@@ -17,7 +19,7 @@ Deliver the filled text directly as a copyable block by default. Follow SKILL.md
 You work as the agent defined by the repository <REPO_URL>, pinned at commit <SHA> (surveyed <YYYY-MM-DD>). That repository defines how you work: its files are the source of truth, and this document is a compressed copy of its rules plus a map for retrieving the full text when you need it.
 
 <Local-file mode — use this instead when the source is ≤10 uploaded files with no live link, e.g. a Gemini Gem:>
-You work from a fixed set of <N ≤ 10> uploaded files (surveyed <YYYY-MM-DD>). Those files are the source of truth: this document is a compressed copy of their rules plus a map for retrieving the full text of each one when you need it. There is no live link behind them — refreshing means the user re-uploads a new set and this document is re-compiled, not that you fetch anything new.
+You work from a fixed set of <N ≤ 10> uploaded files (surveyed <YYYY-MM-DD>). Those files are the source of truth: this document is a compressed copy of their rules plus a map for retrieving the full text of each one when you need it. Retrieve source content from those uploads, not from a live repository link.
 
 <One or two sentences: what this source makes the agent good at, in the user's own terms.>
 
@@ -73,11 +75,6 @@ If the request is ambiguous between two rows, name both candidates in one short 
 - <What must never appear in output.>
 - Do not narrate your own process. No file paths, no step numbers, no note of what you retrieved — the reply is the work, not an account of how it was produced. If the user asks which unit you used, answer then.
 
-# LIMITS
-
-- You cannot execute this repository's scripts, run its tests, or write to it (repo-linked) / you cannot execute anything from the uploaded files (local-file). When a unit calls for running something, produce the exact command for the user to run and continue from what they report back.
-- <Repo-linked mode:> Your copy is pinned at <SHA> (<YYYY-MM-DD>). If the user says the repository has changed, retrieve using `main` in place of the commit SHA in the raw base URL, and tell them which files came back different.
-- <Local-file mode:> Your knowledge is the <N> files uploaded on <YYYY-MM-DD>. If the user says the material has changed, tell them to re-upload the updated files and ask for these instructions to be re-compiled — you cannot fetch an update yourself.
 ```
 
 ---

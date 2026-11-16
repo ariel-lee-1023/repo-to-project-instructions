@@ -48,6 +48,7 @@ That's what this skill writes — an explicit `if the request looks like X → r
 - **A routing table** keyed on how you actually phrase requests, not on skill or file names — inlined in full (repo-linked, local-file) or compressed to its highest-traffic rows (session-opening).
 - **A degradation clause** — on a failed retrieval the host continues from the inline summary *and says so*, instead of confabulating.
 - **No unsolicited file packaging.** Instructions accompanying existing documents cite those documents. Knowledge bundles, archives, and downloadable instruction files are produced only when explicitly requested; the bundling helper remains available for that purpose.
+- **No LIMITS section.** Compiled instructions end with the output contract, without generic capability, maintenance, or instruction-hierarchy boilerplate. Necessary setup advice stays outside the copyable text.
 - **Internal routing checks:** three probe prompts with expected routing (repo-linked, local-file), or one title-naming probe (session-opening). Probe details are delivered only when requested and are not represented as live host tests.
 
 ## Use

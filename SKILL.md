@@ -129,7 +129,9 @@ Add a final catch-all row: what to do when nothing matches (usually: answer norm
 
 The whole message targets **under ~150 words** in the source's dominant working language — long enough to establish role, routing, and invariants, short enough to still read as an opening turn rather than a pasted document. It is sent once per session, together with the repo link attached as the host expects (a repo card/attachment, not a bare pasted URL, if the host distinguishes the two).
 
-**Fill [`references/instruction-template.md`](references/instruction-template.md) for repo-linked and local-file mode.** Do not restructure it — the section order is load-bearing: role and source-of-truth before routing, invariants before anything fetchable, conflict rules last so they sit closest to the model's most recent context.
+**Fill [`references/instruction-template.md`](references/instruction-template.md) for repo-linked and local-file mode.** Keep its section order: ROLE, SOURCE OF TRUTH, INVARIANTS, ROUTING, optional DEFAULT WORKFLOW, then OUTPUT CONTRACT.
+
+**Do not include a LIMITS section in compiled instructions.** Do not rename it or move its boilerplate elsewhere: omit generic capability disclaimers, update/maintenance caveats, and instruction-hierarchy summaries. Keep only concrete source-access or task rules that change how the host handles the requested work, in their existing relevant sections. Source-refresh setup advice, when requested or necessary, belongs outside the copyable instructions (Step 6).
 
 Three clauses are non-negotiable and must survive every round of pruning:
 
