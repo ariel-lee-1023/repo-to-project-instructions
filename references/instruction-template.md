@@ -38,7 +38,7 @@ Uploaded knowledge files: <bundle-01.md … bundle-NN.md>. Each bundle contains 
 <Local-file mode:>
 Uploaded files: <file-1.md … file-N.md, exact names as uploaded, N ≤ 10>. Each is searched directly by name — there are no bundle headers and nothing to fetch from the web for this content.
 
-Retrieval rules:
+Retrieval rules (for archetype D, apply the persona substitutions in Filling notes before delivery):
 1. Before doing work that matches a ROUTING row, retrieve that row's file and follow it literally. It is more specific and more current than this summary.
 2. Retrieve at most <N> files per turn. If a row needs more, retrieve the first, then decide from its contents what else is actually needed.
 3. If retrieval fails or is unavailable (repo-linked), or the named file is not among the uploads (local-file), continue from the inline summary in this document and do not fabricate what is missing — no quotations, figures, dates, or titles you cannot ground. Say so in one short bracketed line in the reply's own language; where an in-character voice makes that impossible, instead hold the answer to what the inline material actually supports, and name the gap if the user asks. Never describe a file you could not retrieve as one you followed.
@@ -59,11 +59,11 @@ Obey on every turn, retrieval or not:
 |---|---|---|
 | <how the user actually phrases it> | `<path/to/UNIT.md>` | <one line: what the unit does> |
 | <…one row per retrievable unit…> | | |
-| matches no row above | nothing | Answer directly under INVARIANTS. Do not retrieve. |
+| <archetype-specific final trigger; see Filling notes> | <matching source access> | <archetype-specific continuation> |
 
 Tie-breaks: <only where two rows genuinely overlap — "if both X and Y apply, do X first because …". Omit this line if there are none.>
 
-If the request is ambiguous between two rows, name both candidates in one short question and wait. Do not run both.
+<A–C: If the request is ambiguous between two procedures, ask one short question before choosing. D: For a cross-topic question, retrieve and combine the relevant materials; clarify only when the user's intended question is genuinely unclear.>
 
 # DEFAULT WORKFLOW
 
@@ -80,6 +80,18 @@ If the request is ambiguous between two rows, name both candidates in one short 
 ---
 
 ## Filling notes
+
+**Choose the final routing row by archetype.** A–C may use `matches no specialized unit → no specialized retrieval → answer under INVARIANTS`. D must use a positive extension row instead:
+
+| When the request… | Retrieve | Then |
+|---|---|---|
+| introduces a new or cross-cutting subject | <real source filenames containing the relevant concepts, mechanisms, or analogous cases> | Find the subject's angle within the existing perspective, retrieve the relevant material, and reason from that perspective and verifiable facts. |
+
+For D, fill the retrieval cell with actual filenames from the surveyed source; use the core concepts to select among them, not a directory the host cannot search. State that the topic map is an entry index, not the boundary of the perspective: every substantive subject has an appropriate angle. A missing literal topic label requires conceptual retrieval. Never add an unmatched/no-retrieval exit, a generic-assistant fallback, or a statement that the framework does not apply. Conceptual retrieval may yield little; the continuation still uses the existing perspective and verifiable facts without inventing source content.
+
+**Persona substitutions for retrieval rules 3–4.** Replace both generic disclosure rules with: `If retrieval fails or supplies little relevant evidence, continue through the established perspective and verifiable facts. Do not invent quotations, figures, dates, titles, or source content. Express uncertainty about the facts in the answer's own register, without narrating retrieval status.` Do not leave the generic instruction to announce missing files alongside this replacement. Keep rule 5's fetched-content boundary.
+
+**No distancing boilerplate in persona instructions.** Omit simulation disclaimers, reminders not to present the answer as the author's established view, and notices that the author never addressed the subject. Do not transplant these from source files or rephrase them as standing attribution disclosures. Apply SKILL.md Step 5's filter; keep evidence requirements as concrete instructions to verify facts and ground quotations. These filling notes guide the compiler and are not an extra disclaimer section to paste into the output.
 
 **ROLE** — do not write "you are a helpful assistant that…". Name the repo's job. A Gem whose role line says "you route among 27 legal-reasoning skills" behaves differently from one that says "you help with legal questions".
 
@@ -109,13 +121,13 @@ A persona announcing "the archive holds nothing on X, so I answer from my own st
 
 The ban covers the softened version too, not only the blunt one. "That is not a formulation I can vouch for" or "I answer within my own frame rather than that passage" sounds in-voice and can slip past a casual read, but its real subject is still the search, not the substance — the same break in a longer coat. If the source repo's own material states a retrieval-failure behavior anywhere (a provenance file, a fidelity note), do not carry that behavior into the compiled text verbatim from wherever it was phrased for a human reader; rewrite it as an in-character move that answers the case instead of naming the gap, and place it under "How I move in an exchange" or the nearest voice-bearing section — never as a bracketed notice.
 
-**The fact/frame boundary is a third clause on the same line, not optional.** A persona repo's reference files supply an analytical frame — how this person thinks, what they weigh, the moves they characteristically make — not a factual record of the world the user is asking about. The persona never has first-hand knowledge of what the user's specific question is actually about: a living figure's repo cannot contain their opinion on this week's news; a historical figure's repo cannot contain their reaction to something that happened after they died; and even for the frame itself, repo files are the compressed distillation, not the person's complete corpus. Any time the question turns on a specific fact, current event, real quotation, name, date, or claim about the world — as opposed to how the persona would reason about a topic already given in the question — retrieval rule 1 (fetch before answering a ROUTING row) is not optional and inline material never substitutes for it. Fold this into the same opening line, immediately after the narration ban:
+**Factual grounding is a third clause on the same line, not optional.** The persona's perspective applies to every subject, including unfamiliar ones. Establish the factual premises through reliable sources, then apply that perspective. Conceptual retrieval from the persona files and verification of real-world facts are complementary; neither substitutes for the other. Fold this into the same opening line, immediately after the narration ban:
 
 ```
-The reference files give me a way of thinking, not knowledge of what you are asking about — where your question turns on a specific fact, name, date, or current event, I am silently drawing on what retrieval returns, not on some memory of my own.
+When a question turns on a specific fact, name, date, quotation, or current event, establish it through reliable sources before judging it; let the evidence determine the factual premises.
 ```
 
-This is not the same rule as the narration ban just above it: the narration ban stops the persona from describing that it searched; this clause stops the compiled instructions from implying the persona can skip searching because the voice material feels like enough. Both survive every round of pruning together — cutting this one reintroduces confabulation dressed as character consistency, which is worse than a visible search notice would have been.
+The narration ban keeps the answer in character; this clause requires fact-checking even when the perspective already supplies a convincing interpretation. Both survive pruning. Neither calls for an authorship disclaimer or a discussion of the persona's simulated status.
 
 **Retrieval rule 2** — set `<N>` to 1 or 2. Hosts that are told they may fetch freely fetch nothing, or fetch a pile and read none of it. A hard small number is what actually produces a fetch.
 
@@ -147,11 +159,11 @@ This is the session-opening mode deliverable (Gemini Spark or an equivalent host
 
 <Role, one sentence — a standing role for the rest of the session, not a one-off request.>
 
-<Compressed routing, 2–4 sentences — the few triggers a real first turn will actually hit, collapsed from the ROUTING table into plain language. "如果我发...就...；如果我说...就...">
+<Compressed routing, 2–4 sentences — the few triggers a real first turn will actually hit, collapsed from the ROUTING table into plain language. For D, also route unfamiliar subjects through the existing perspective to conceptual or analogous material; never add an unmatched/no-retrieval exit.>
 
 <Invariants that cannot wait, 1–3 short imperatives — only the ones that would already be wrong by the second message if unstated.>
 
-<One line: what to do if the link cannot be read — continue from what you can infer from the repo name/description, say so, do not invent content.>
+<One line: if the link cannot be read, A–C continue from the purpose statement and disclose the gap; D continues in character through the established perspective and verifiable facts without retrieval-status or attribution prefaces. Never invent source content.>
 ```
 
 **Worked example**, from a TOEFL 2026 writing-and-speaking rubric repo, in the repo's own working language:
@@ -173,15 +185,15 @@ Notice what this example is *not*: it does not summarize the repo ("这个仓库
 **Filling notes specific to this mode:**
 
 - **The opening clause does double duty and that is the point.** It is simultaneously the first thing the model reads and the text the host's session-namer most heavily weights. A clause that is only good for one of those two jobs is not finished. Test it by asking: if a title-generator saw only these first 15 words, would the title it produces name this repo's actual subject? If not, rewrite the opening before touching anything else in the message.
-- **Do not import ROLE's persona-opening-line machinery from the main template into this mode by default.** If the source is archetype D (voice/persona), the living/dead branch and the narration-ban/fact-frame-boundary sentences from "ROLE for a voice/persona repo" above still apply and still go first, before the subject-naming clause — but check whether a session-opening persona message can even carry both jobs at once (persona opening line, subject-naming clause) inside a 150-word budget; if it cannot, the persona opening line wins and the user is told plainly that session titles will be generic for this repo in session-opening mode.
+- **Do not import ROLE's persona-opening-line machinery from the main template into this mode by default.** If the source is archetype D (voice/persona), the living/dead branch and the narration-ban/fact-grounding sentences from "ROLE for a voice/persona repo" above still apply and still go first, before the subject-naming clause — but check whether a session-opening persona message can even carry both jobs at once (persona opening line, subject-naming clause) inside a 150-word budget; if it cannot, the persona opening line wins and the user is told plainly that session titles will be generic for this repo in session-opening mode.
 - **There is no SOURCE OF TRUTH section and no bundle citation syntax.** The repo link attached to the message *is* the source of truth for that turn; there is nothing to point at with a raw-URL path because the host fetches the attachment directly, not a path inside it that this message names.
-- **Retrieval rules 3–5 from the main template collapse into the single degradation line.** There is no multi-file routing to protect against partial retrieval failure in this mode — either the attached link resolves or it does not, for the whole session, so the message only needs one branch instead of the main template's numbered rules.
+- **Retrieval rules 3–5 from the main template collapse into the single degradation line.** Apply the D substitution for persona sources; compression must not restore a missing-file announcement or attribution disclaimer. The unfamiliar-subject routing and factual-grounding requirements still apply after the initial fetch.
 
 ---
 
 ## Worked fragment
 
-From a skills repo with a `skills/engineering/` folder, three units shown:
+From a skills repo (archetype A, not a persona) with a `skills/engineering/` folder, three units shown. Its unmatched row must not be copied into D outputs:
 
 ```markdown
 # ROUTING
